@@ -1,0 +1,109 @@
+import { createClient } from '@/utils/supabase/server';
+import { headers } from 'next/headers';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import React from 'react';
+import Image from 'next/image';
+import googleIcon from '@/public/googleIcon.png';
+
+type Props = {};
+
+function page({ searchParams }: { searchParams: { message: string } }) {
+  const signUp = async (formData: FormData) => {
+    'use server';
+
+    const origin = headers().get('origin');
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+    const supabase = createClient();
+
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${origin}/auth/callback`,
+      },
+    });
+
+    if (error) {
+      return redirect('/auth/signUp?message=Could not authenticate user');
+    }
+
+    return redirect(
+      '/auth/signUp?message=Check email to continue sign in process'
+    );
+  };
+
+  const signUpWithGoogle = async () => {
+    'use server';
+    const origin = headers().get('origin');
+    const supabase = createClient();
+
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${origin}/auth/callback`,
+      },
+    });
+    console.log(error);
+
+    redirect(data.url || '');
+  };
+
+  return (
+    <>
+      <div className="flex h-[100svh] flex-col items-center justify-center bg-accentColor drop-shadow-2xl md:w-2/5 md:rounded-r-2xl">
+        <form action={signUpWithGoogle}>
+          <button className="flex items-center gap-6 rounded-lg bg-[#5C5C5C] drop-shadow-lg px-[32px] py-[16px] text-xl font-semibold text-white">
+            <Image
+              alt="logo of google"
+              width={30}
+              height={30}
+              src={googleIcon}
+            />
+            Continue with Google
+          </button>
+        </form>
+        <p className="pb-[40px] pt-[20px] font-semibold text-white">or</p>
+        <form
+          autoComplete="off"
+          action={signUp}
+          className="flex flex-col gap-3"
+        >
+          <input
+            className="rounded-lg bg-white drop-shadow-lg py-[12px] indent-2 text-base font-semibold outline-none text-black active:bg-mainBG"
+            type="email"
+            placeholder="Email address"
+            name="email"
+            required
+          />
+          <input
+            className="rounded-lg bg-white drop-shadow-lg py-[12px] indent-2 text-base font-semibold outline-none text-black active:bg-mainBG"
+            type="password"
+            placeholder="Password"
+            name="password"
+            required
+          />
+          <div className="controls flex flex-col gap-2 pt-[100px]">
+            <button className="rounded-lg bg-brandColor py-[10px] text-xl font-semibold text-white">
+              Sign up
+            </button>
+            <Link href={'/auth/signIn'}>
+              <button className="text-base text-white">
+                Already have an account ?
+                <span className="font-semibold"> Sign in</span>
+              </button>
+            </Link>
+          </div>
+          {searchParams?.message && (
+            <p className="mt-4 bg-3BG/20 p-4 text-center text-white/50">
+              {searchParams.message}
+            </p>
+          )}
+        </form>
+      </div>
+    </>
+  );
+}
+
+export default page;
