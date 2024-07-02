@@ -1,3 +1,4 @@
+import ReduxProvider from '@/redux/redux-provider';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
@@ -24,10 +25,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div>
-          <h1>Hello</h1>
-        </div>
+        <ReduxProvider>
         <main>{children}</main>
+        </ReduxProvider>
       </body>
     </html>
   );

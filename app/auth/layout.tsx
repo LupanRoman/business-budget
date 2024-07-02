@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
+import ReduxProvider from '@/redux/redux-provider';
 
 export const metadata = {
   title: 'Next.js',
@@ -18,16 +19,18 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className="bg-secondaryColor relative">
-        <nav className="absolute text-white z-50 top-10 left-10">
-          <form action={goToLanding}>
-            <button>
-              <ArrowBackIosRoundedIcon fontSize="small" />
-            </button>
-          </form>
-        </nav>
-        <main>{children}</main>
-      </body>
+      <ReduxProvider>
+        <body className="bg-secondaryColor relative">
+          <nav className="absolute text-white z-50 top-10 left-10">
+            <form action={goToLanding}>
+              <button>
+                <ArrowBackIosRoundedIcon fontSize="small" />
+              </button>
+            </form>
+          </nav>
+          <main>{children}</main>
+        </body>
+      </ReduxProvider>
     </html>
   );
 }
