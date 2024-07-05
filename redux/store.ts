@@ -1,8 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux';
+import crudCompanyReducer from '@/redux/features/crudCompany/crudCompanySlice';
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    crudCompanySlice: crudCompanyReducer,
+  },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),
 });

@@ -24,9 +24,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body>
+      <body className="h-[100svh] relative">
         <ReduxProvider>
-        <main>{children}</main>
+          <main>{children}</main>
         </ReduxProvider>
       </body>
     </html>
