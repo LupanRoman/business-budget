@@ -1,3 +1,4 @@
+import CompaniesList from '@/components/hub/companiesList';
 import TopBar from '@/components/hub/topBar';
 import CrudCompanyModal from '@/redux/features/crudCompany/crudCompanyModal';
 import { createClient } from '@/utils/supabase/server';
@@ -5,14 +6,17 @@ import React from 'react';
 
 type Props = {};
 
-function page({}: Props) {
+async function page({}: Props) {
+  const supabase = createClient();
+  let { data: Companies, error } = await supabase.from('Company').select('*');
+  console.log(Companies);
+
   return (
     <>
       <div className="h-full">
         <TopBar />
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 ">
-          <CrudCompanyModal />
-        </div>
+        <CrudCompanyModal />
+        <CompaniesList serverCompanies={Companies} />
       </div>
     </>
   );
