@@ -9,7 +9,6 @@ type Props = {};
 async function page({}: Props) {
   const supabase = createClient();
   let { data: Companies, error } = await supabase.from('Company').select('*');
-  console.log(Companies);
 
   return (
     <>

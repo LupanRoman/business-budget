@@ -33,11 +33,11 @@ function CompaniesList({ serverCompanies }: Props) {
 
   return (
     <>
-      <div>
+      <div className="flex flex-col justify-center items-center pt-10 w-full gap-5 md:flex-row md:justify-normal px-10 flex-wrap">
         {companiesList.map((company: any) => {
           return (
             <>
-              <div>
+              <div className="flex items-center">
                 <CompanyCard title={company.company_title} id={company.id} />
               </div>
             </>

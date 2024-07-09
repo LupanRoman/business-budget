@@ -1,11 +1,16 @@
-import React from 'react'
+import BalanceCard from '@/components/workspace/dashboard/balanceCard';
+import React from 'react';
 
-type Props = {}
+type Props = {};
 
 function page({}: Props) {
   return (
-    <div>page</div>
-  )
+    <>
+      <div>
+        <BalanceCard />
+      </div>
+    </>
+  );
 }
 
-export default page
+export default page;
