@@ -18,15 +18,7 @@ export default async function RootLayout({
     return redirect("/");
   };
 
-  const supabase = createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (user) {
-    return redirect("/hub");
-  }
+  
 
   return (
     <html lang="en">

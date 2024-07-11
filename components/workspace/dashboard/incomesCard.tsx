@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import TrendingUpRoundedIcon from "@mui/icons-material/TrendingUpRounded";
 import { createClient } from "@/utils/supabase/client";
 
@@ -7,20 +7,47 @@ type Props = {
   incomes: number;
   budget: number;
   id: number;
+  serverCompany: any;
 };
 
-function IncomesCard({ incomes, budget, id }: Props) {
+function IncomesCard({ incomes, budget, id, serverCompany }: Props) {
+  const [companyIncome, setCompanyIncome] = useState(serverCompany);
+
+  // useEffect(() => {
+  //   const updateBudget = async () => {
+  //     const supabase = createClient();
+  //     const { data, error } = await supabase
+  //       .from("Company")
+  //       .update({ budget: budget })
+  //       .eq("id", id)
+  //       .select();
+  //   };
+  //   updateBudget();
+  // }, [incomes]);
+
   useEffect(() => {
-    const updateBudget = async () => {
-      const supabase = createClient();
-      const { data, error } = await supabase
-        .from("Company")
-        .update({ budget: budget })
-        .eq("id", id)
-        .select();
+    const supabase = createClient();
+    const channel = supabase
+      .channel("*")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "Company" },
+        async () => {
+          const { data: Company } = await supabase
+            .from("Company")
+            .select("incomes")
+            .eq("id", id);
+          setCompanyIncome(Company);
+          console.log(Company![0].incomes);
+          console.log(companyIncome);
+        },
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
     };
-    updateBudget();
-  }, [incomes]);
+  }, [serverCompany]);
 
   return (
     <>
