@@ -1,16 +1,24 @@
 "use client";
-import { useAppDispatch } from "@/redux/store";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { User } from "@supabase/supabase-js";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
+import {
+  handleSettings,
+  handleSettingsValue,
+} from "@/redux/features/crudCompany/crudCompanySlice";
 
 type Props = {
   user: User;
 };
 
 function TopBar({ user }: Props) {
+  const dispatch = useAppDispatch();
+  const handleSettingsState = useAppSelector(handleSettingsValue);
+
   const [greeting, setGreeting] = useState("");
   useEffect(() => {
     const now = new Date();
@@ -50,9 +58,16 @@ function TopBar({ user }: Props) {
               />
             </button>
           ) : null}
+          <button
+            onClick={() => {
+              dispatch(handleSettings(!handleSettingsState));
+            }}
+          >
+            <SettingsRoundedIcon fontSize="small" />
+          </button>
           <Link href={"/hub"}>
             <button>
-              <LogoutRoundedIcon />
+              <LogoutRoundedIcon fontSize="small" />
             </button>
           </Link>
         </div>
