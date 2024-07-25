@@ -9,7 +9,7 @@ type Props = {};
 
 function Settings({}: Props) {
   const handleSettingsState = useAppSelector(handleSettingsValue);
-  const [currentCompanyId, setCurrentCompanyId] = useState<string>();
+  const [currentCompanyId, setCurrentCompanyId] = useState<string>("");
 
   useEffect(() => {
     const currentId = JSON.parse(localStorage.getItem("projectID") || "");
@@ -22,9 +22,8 @@ function Settings({}: Props) {
         <div className="flex">
           <button
             onClick={() => {
-              console.log(currentCompanyId);
 
-                deleteCompany(currentCompanyId);
+              deleteCompany(currentCompanyId);
             }}
             className="flex items-center gap-2 text-xs font-medium"
           >

@@ -1,6 +1,7 @@
 import SideBar from "@/components/workspace/sideBar";
 import TopBar from "@/components/workspace/topBar";
 import Settings from "@/redux/features/crudCompany/settings";
+import AddIncome from "@/redux/features/incomes/addIncome";
 import ReduxProvider from "@/redux/redux-provider";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
@@ -32,6 +33,7 @@ export default async function RootLayout({
           className={`bg-mainBG text-textColor relative flex h-[100svh] flex-col md:max-h-[100vh] lg:grid lg:grid-cols-8 lg:grid-rows-10`}
         >
           <Settings />
+          <AddIncome />
           <div className="lg:col-start-2 lg:col-end-9 lg:row-span-1">
             <TopBar user={user} />
           </div>
