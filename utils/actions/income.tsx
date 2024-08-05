@@ -7,7 +7,7 @@ export const addIncome = async (
   incomeTitle: string,
   incomeAmount: string,
   incomeType: string,
-  companyID: string
+  companyID: string,
 ) => {
   const { data, error } = await supabase
     .from("Incomes")
@@ -16,7 +16,7 @@ export const addIncome = async (
         title: incomeTitle,
         amount: incomeAmount,
         type: incomeType,
-        company_id: companyID
+        company_id: companyID,
       },
     ])
     .select();
@@ -29,6 +29,9 @@ export const getIncomes = async (companyID: string) => {
     .select("amount")
     .eq("company_id", companyID);
 
-  return Incomes?.map((income) => income.amount);
-  // console.log(Incomes);
+  let totalIncome = 0;
+  for (let i = 0; i < Incomes!.length; i++) {
+    totalIncome! += Incomes![i].amount;
+  }
+  return totalIncome;
 };
