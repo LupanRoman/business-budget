@@ -12,6 +12,11 @@ async function page({ params: { id } }: { params: { id: number } }) {
     .select("*")
     .eq("id", id);
 
+  let { data: Incomes, error: IncomesError } = await supabase
+    .from("Incomes")
+    .select("*")
+    .eq("company_id", id);
+
   const budget = Company![0].incomes - Company![0].expenses;
 
   return (
@@ -19,7 +24,13 @@ async function page({ params: { id } }: { params: { id: number } }) {
       <div className="w-full gap-2">
         <div className="flex flex-col gap-5 md:grid md:grid-cols-3 md:gap-10">
           <BalanceCard budget={budget} />
-          <IncomesCard incomes={Company![0].incomes} budget={budget} id={id} serverCompany={Company} />
+          <IncomesCard
+            serverIncomes={Incomes}
+            incomes={Company![0].incomes}
+            budget={budget}
+            id={id}
+            serverCompany={Company}
+          />
           <ExpensesCard
             expenses={Company![0].expenses}
             budget={budget}

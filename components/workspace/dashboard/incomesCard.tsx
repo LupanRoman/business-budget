@@ -9,23 +9,19 @@ type Props = {
   budget: number;
   id: number;
   serverCompany: any;
+  serverIncomes: any;
 };
 
-function IncomesCard({ incomes, budget, id, serverCompany }: Props) {
+function IncomesCard({
+  serverIncomes,
+  incomes,
+  budget,
+  id,
+  serverCompany,
+}: Props) {
   const [companyIncome, setCompanyIncome] = useState(serverCompany);
   const [totalIncome, setTotalIncome] = useState<number>();
-
-  // useEffect(() => {
-  //   const updateBudget = async () => {
-  //     const supabase = createClient();
-  //     const { data, error } = await supabase
-  //       .from("Company")
-  //       .update({ budget: budget })
-  //       .eq("id", id)
-  //       .select();
-  //   };
-  //   updateBudget();
-  // }, [incomes]);
+  const [incomesList, setIncomesList] = useState(serverIncomes);
 
   useEffect(() => {
     const supabase = createClient();
@@ -52,12 +48,34 @@ function IncomesCard({ incomes, budget, id, serverCompany }: Props) {
   }, [serverCompany]);
 
   useEffect(() => {
+    const supabase = createClient();
+    const channel = supabase
+      .channel("*")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "Incomes" },
+        async () => {
+          const { data: Incomes } = await supabase
+            .from("Incomes")
+            .select("*")
+            .eq("company_id", id);
+          setIncomesList(Incomes);
+        },
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [serverIncomes]);
+
+  useEffect(() => {
     const getTotalIncome = async () => {
       let result = await getIncomes(id.toString());
       setTotalIncome(result);
     };
     getTotalIncome();
-  }, []);
+  }, [incomesList]);
 
   return (
     <>

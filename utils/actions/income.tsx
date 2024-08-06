@@ -28,10 +28,29 @@ export const getIncomes = async (companyID: string) => {
     .from("Incomes")
     .select("amount")
     .eq("company_id", companyID);
-
+  // TODO Change the way the total income is calculated
+  // TODO for a larger database it may be inefficient
   let totalIncome = 0;
   for (let i = 0; i < Incomes!.length; i++) {
     totalIncome! += Incomes![i].amount;
   }
   return totalIncome;
+};
+
+export const deleteIncomeEntry = async (id: number) => {
+  "user server";
+  const { error } = await supabase.from("Incomes").delete().eq("id", id);
+};
+
+export const editIncomeEntry = async (
+  id: number,
+  incomeTitle: string,
+  incomeType: string,
+  incomeAmount: number,
+) => {
+  const { data, error } = await supabase
+    .from("Incomes")
+    .update({ title: incomeTitle, type: incomeType, amount: incomeAmount })
+    .eq("id", id)
+    .select();
 };
