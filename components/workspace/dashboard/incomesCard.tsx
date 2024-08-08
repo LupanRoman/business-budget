@@ -6,7 +6,6 @@ import { getIncomes } from "@/utils/actions/income";
 
 type Props = {
   incomes: number;
-  budget: number;
   id: number;
   serverCompany: any;
   serverIncomes: any;
@@ -15,7 +14,6 @@ type Props = {
 function IncomesCard({
   serverIncomes,
   incomes,
-  budget,
   id,
   serverCompany,
 }: Props) {
@@ -36,8 +34,6 @@ function IncomesCard({
             .select("incomes")
             .eq("id", id);
           setCompanyIncome(Company);
-          console.log(Company![0].incomes);
-          console.log(companyIncome);
         },
       )
       .subscribe();
@@ -73,6 +69,12 @@ function IncomesCard({
     const getTotalIncome = async () => {
       let result = await getIncomes(id.toString());
       setTotalIncome(result);
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("Company")
+        .update({ incomes: result })
+        .eq("id", id)
+        .select();
     };
     getTotalIncome();
   }, [incomesList]);

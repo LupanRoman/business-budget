@@ -53,7 +53,7 @@ function IncomesList({ serverIncomes, companyID }: Props) {
                   <p>{income.amount}</p>
                   <div className="flex items-center gap-1">
                     <button
-                      onClick={(e) => {
+                      onClick={() => {
                         // if (income.id == e) {
                         //   setIsEntryEditable(!isEntryEditable);
                         // } else {

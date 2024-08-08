@@ -17,25 +17,25 @@ async function page({ params: { id } }: { params: { id: number } }) {
     .select("*")
     .eq("company_id", id);
 
-  const budget = Company![0].incomes - Company![0].expenses;
+  // const budget = Company![0].incomes - Company![0].expenses;
 
   return (
     <>
       <div className="w-full gap-2">
         <div className="flex flex-col gap-5 md:grid md:grid-cols-3 md:gap-10">
-          <BalanceCard budget={budget} />
+          <BalanceCard
+            incomes={Company![0].incomes}
+            expenses={Company![0].expenses}
+            serverCompany={Company}
+            companyID={id}
+          />
           <IncomesCard
             serverIncomes={Incomes}
             incomes={Company![0].incomes}
-            budget={budget}
             id={id}
             serverCompany={Company}
           />
-          <ExpensesCard
-            expenses={Company![0].expenses}
-            budget={budget}
-            id={id}
-          />
+          <ExpensesCard expenses={Company![0].expenses} id={id} />
         </div>
       </div>
     </>

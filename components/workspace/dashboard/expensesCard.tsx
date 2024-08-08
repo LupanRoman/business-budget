@@ -3,11 +3,10 @@ import TrendingUpRoundedIcon from "@mui/icons-material/TrendingUpRounded";
 
 type Props = {
   expenses: number;
-  budget: number;
   id: number;
 };
 
-function ExpensesCard({ expenses, budget, id }: Props) {
+function ExpensesCard({ expenses, id }: Props) {
   return (
     <>
       <div className="flex w-full flex-col gap-5 rounded-xl bg-secondaryColor px-5 py-5">
