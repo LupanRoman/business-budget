@@ -2,11 +2,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 import crudCompanyReducer from "@/redux/features/crudCompany/crudCompanySlice";
 import incomesStateReducer from "@/redux/features/incomes/incomesSlice";
+import expensesStateReducer from "@/redux/features/expenses/expensesSlice";
 
 export const store = configureStore({
   reducer: {
     crudCompanySlice: crudCompanyReducer,
     incomesSlice: incomesStateReducer,
+    expensesSlice: expensesStateReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),

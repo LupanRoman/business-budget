@@ -1,5 +1,9 @@
 "use client";
 import {
+  expensesFormStateValue,
+  handleExpensesForm,
+} from "@/redux/features/expenses/expensesSlice";
+import {
   handleActions,
   handleIncomesForm,
   incomesFormStateValue,
@@ -14,6 +18,7 @@ function AddBtn({}: Props) {
   const dispatch = useAppDispatch();
   const showActionsState = useAppSelector(showActionsValue);
   const incomesFormState = useAppSelector(incomesFormStateValue);
+  const expensesFormState = useAppSelector(expensesFormStateValue);
   return (
     <>
       <div className="hidden w-full px-2 md:flex">
@@ -36,7 +41,12 @@ function AddBtn({}: Props) {
               >
                 Income
               </button>
-              <button className="w-full rounded-lg px-2 py-1 text-start hover:bg-brandColor">
+              <button
+                onClick={() => {
+                  dispatch(handleExpensesForm(!expensesFormState));
+                }}
+                className="w-full rounded-lg px-2 py-1 text-start hover:bg-brandColor"
+              >
                 Expense
               </button>
             </div>

@@ -1,6 +1,7 @@
 import SideBar from "@/components/workspace/sideBar";
 import TopBar from "@/components/workspace/topBar";
 import Settings from "@/redux/features/crudCompany/settings";
+import AddExpenses from "@/redux/features/expenses/addExpenses";
 import AddIncome from "@/redux/features/incomes/addIncome";
 import ReduxProvider from "@/redux/redux-provider";
 import { createClient } from "@/utils/supabase/server";
@@ -34,6 +35,7 @@ export default async function RootLayout({
         >
           <Settings />
           <AddIncome />
+          <AddExpenses />
           <div className="lg:col-start-2 lg:col-end-9 lg:row-span-1">
             <TopBar user={user} />
           </div>

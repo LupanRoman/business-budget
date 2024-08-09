@@ -17,6 +17,11 @@ async function page({ params: { id } }: { params: { id: number } }) {
     .select("*")
     .eq("company_id", id);
 
+  let { data: Expenses, error: ExpensesError } = await supabase
+    .from("Expenses")
+    .select("*")
+    .eq("company_id", id);
+
   // const budget = Company![0].incomes - Company![0].expenses;
 
   return (
@@ -35,7 +40,12 @@ async function page({ params: { id } }: { params: { id: number } }) {
             id={id}
             serverCompany={Company}
           />
-          <ExpensesCard expenses={Company![0].expenses} id={id} />
+          <ExpensesCard
+            serverCompany={Company}
+            serverExpenses={Expenses}
+            expenses={Company![0].expenses}
+            id={id}
+          />
         </div>
       </div>
     </>
